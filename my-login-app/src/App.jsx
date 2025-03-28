@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { CheckCircle, User, Lock } from 'lucide-react';
+// import { router } from './router';
+import { useNavigate } from '@tanstack/react-router';
 
 const App = () => {
   const [showConditions, setShowConditions] = useState(false);
+  const navigate = useNavigate()
 
   const form = useForm({
     defaultValues: {
@@ -15,10 +18,13 @@ const App = () => {
       localStorage.setItem('password', values.value.password);
       alert(`${values.value.username} is trying to login`);
       console.log(values.value.username)
+
+      navigate({ to: '/home' });
     }
   });
 
   return (
+   
     <div className="h-screen flex items-center justify-center bg-[#0b0b2a]">
       <div className="max-w-sm w-full p-8 bg-[#1a1a3a] rounded-xl shadow-2xl border border-white/10">
         <div className="flex justify-center -mt-20 mb-6">
@@ -183,4 +189,5 @@ const App = () => {
   );
 };
 
-export default App;
+
+export default App
