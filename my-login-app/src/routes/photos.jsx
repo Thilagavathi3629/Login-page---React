@@ -154,7 +154,7 @@ const PhotosPage = () => {
             >
               Logout
             </button>
-            <p className="mt-6 text-gray-400 text-sm">© 2025 Photo Gallery Application</p>
+            
           </div>
         </div>
       </footer>
