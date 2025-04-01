@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { CheckCircle, User, Lock } from 'lucide-react';
-// import { router } from './router';
 import { useNavigate } from '@tanstack/react-router';
 
 const App = () => {
@@ -24,7 +23,6 @@ const App = () => {
   });
 
   return (
-   
     <div className="h-screen flex items-center justify-center bg-[#0b0b2a]">
       <div className="max-w-sm w-full p-8 bg-[#1a1a3a] rounded-xl shadow-2xl border border-white/10">
         <div className="flex justify-center -mt-20 mb-6">
@@ -33,7 +31,7 @@ const App = () => {
           </div>
         </div>
 
-        <form onSubmit={ (e) => {
+        <form onSubmit={(e) => {
           e.preventDefault()
           form.handleSubmit()
         }}>
@@ -44,30 +42,44 @@ const App = () => {
             name="username"
             validators={{
               onChange: ({ value }) =>
-                value.length < 3 ? 'Username should be more than 3 characters' : undefined,
+                !value.trim().endsWith('@gmail.com') ? '': undefined,
               onBlur: ({ value }) =>
                 value.trim() === '' ? 'Username is required' : undefined
             }}
           >
-            {(field) => (
-              <div className="mb-4">
-                <label htmlFor={field.name} className="block text-white mb-2 font-medium">
-                  Username
-                </label>
-                <input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-gray-400"
-                  placeholder="Enter your username"
-                />
-                {field.state.meta.errors && (
-                  <p className="text-red-500 text-sm mt-1">{field.state.meta.errors.join(', ')}</p>
-                )}
-              </div>
-            )}
+            {(field) => {
+              const hasError = field.state.meta.errors && field.state.meta.errors.length > 0;
+
+              return (
+                <div className="mb-4">
+                  <label htmlFor={field.name} className="block text-white mb-2 font-medium">
+                    Username
+                  </label>
+                  <input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-gray-400"
+                    placeholder="Enter your username"
+                  />
+                  {hasError && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <p className="text-red-500 text-sm">
+                        {field.state.meta.errors.join(', ')}
+                      </p>
+                      {!field.state.value.endsWith('@gmail.com') && (
+                        <div className="flex items-center gap-1 p-2 bg-white/10 text-white rounded-full text-sm px-3">
+                          <CheckCircle className="text-purple-400" size={14} />
+                          <span>Must end with @gmail.com</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            }}
           </form.Field>
 
           {/* Password Field using form.Field */}
@@ -189,5 +201,4 @@ const App = () => {
   );
 };
 
-
-export default App
+export default App;
